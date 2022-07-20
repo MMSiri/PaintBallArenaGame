@@ -6,33 +6,42 @@ namespace PaintBallArenaGame
 {
     class PaintballGun
     {
-        public const int MAGAZINE_SIZE = 16;
+
+        public PaintballGun(int balls, int magazineSize, bool loaded)
+        {
+            //'this' allows us to refer to the similarly titled 'balls' field. 'balls' by itself refers to the constructor's 'balls' parameter.
+            this.balls = balls;
+            MagazineSize = magazineSize;
+            if (!loaded) Reload();
+        }
+
+        public int MagazineSize { get; private set; } = 16;
 
         private int balls = 0;
-        private int ballsLoaded = 0;
+        public int BallsLoaded { get; private set; }
 
-        public int GetBallsLoaded() { return ballsLoaded; }
-
-        public bool IsEmpty() { return ballsLoaded == 0; }
-
-        public int GetBalls() { return balls; }
-
-        public void SetBalls(int numberOfBalls)
+        public int Balls
         {
-            if (numberOfBalls > 0) balls = numberOfBalls;
-            Reload();
+            get { return balls; }
+            set
+            {
+                if (value > 0) balls = value;
+                Reload();
+            }
         }
+
+        public bool IsEmpty() { return BallsLoaded == 0; }
 
         public void Reload()
         {
-            if (balls > MAGAZINE_SIZE) ballsLoaded = MAGAZINE_SIZE;
-            else ballsLoaded = balls;
+            if (balls > MagazineSize) BallsLoaded = MagazineSize;
+            else BallsLoaded = balls;
         }
 
         public bool Shoot()
         {
-            if (ballsLoaded == 0) return false;
-            ballsLoaded--;
+            if (BallsLoaded == 0) return false;
+            BallsLoaded--;
             balls--;
             return true;
         }
